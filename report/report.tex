@@ -87,7 +87,7 @@ In order to scrape this website I started from
 Rather than \verb|https://www.myswitzerland.com|. As for the scraping of this website, I didn't encounter any problem, thus no particular workaround or hack was needed.
 
 \section{Indexing}
-In order to index the data, I've used Solr. In Solr the first thing I did was to modify the default \textit{managed-schema} contained inside of the \textit{config} folder of the \textit{$\_$default} schema. This was done in order to let Solr know how to interpret the data passed to it. The data is divided by Solr in the following fields:
+In order to index the data, I've used Solr. In Solr the first thing I did was to modify the default \textit{managed-schema} contained inside of the \textit{config} folder of the \textit{$\_$default} schema. This was done in order to let Solr know how to interpret the data passed to it. The data is divided in Solr in the following fields:
 
 \begin{table}[H]
 	\centering
@@ -144,6 +144,39 @@ Breaking down this long query, we can see the following parameters being passed 
 	\vspace{.2cm} \\
 	This sets the sorting function to be \textit{geodist()} -- which will sort all of the data based on their distance to \textit{pt}. The value \textit{asc} indicates that the sorted data needs to be in ascending order of distance.
 \end{itemize}
+
+\section{Webapp}
+In order to create the webapp, I've used Vue.js. Vue is a JavaScript framework used to create modular applications, and is particularly suitable when dealing with lists -- in this case the hotels. \\ \\
+The website is divided in two main pages. The first is used to search for a place, while the second is used to both display the results and let the user modify the query.
+
+\subsection{Search Page}
+This page was left very bare-bones intentionally. This is because I wanted to make the user focus only on what he/she came on the website to do: search for hotels. \\ \\
+After that the user has typed in the search box the location to look for and pressed enter, the website will make a fetch request to \textit{nominatim} -- in order to get the coordinates of the location to look for -- and to Solr -- in order to fetch all of the hotels that are geographically closer to the searched location. \\ \\
+The following is a screen-shot of the page.
+
+\begin{center}
+	\includegraphics[width=15cm]{./main.png}
+\end{center}
+
+\subsection{Results Page}
+In this page all of the results are displayed. In addition to that -- as per requirements -- I've included also a map that displays the top twenty results of the query. Finally, this page can be also used in order to refine the query or completely change it. \\ \\
+In order to display the map and the markers, I've used an \textit{openstreetmaps} wrapper for Vue. The map is interactive, and if hovered, the markers will show some information -- name and address -- of the respective hotel. The reason behind showing only the name and the address in the tool-tip of the marker, is that more information would have resulted in a bigger tool-tip and a less aesthetically pleasing design. Moreover, all of the information relative to every single hotel is displayed under the map. \\ \\
+Every hotel has the following data:
+
+\begin{itemize}
+	\item \textbf{Address}
+	\item \textbf{Name}
+	\item \textbf{Two-Line Description}
+	\item \textbf{Rating}
+	\item \textbf{Source}
+\end{itemize}
+The number of hotels retrieved from Solr, and how much time the request took, can be found right under the map. Moreover, only 25 results are displayed per page. For this reason, I've also implemented a pagination system. \\ \\
+The following is a screen-shot of the page.
+
+\begin{center}
+	\includegraphics[width=15cm]{./results.png}
+\end{center}
+
 
 \end{document}
 
