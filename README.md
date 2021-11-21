@@ -1,2 +1,2 @@
 # docs
-Report and documentation for the project
+Report and documentation for the Search Engine project
