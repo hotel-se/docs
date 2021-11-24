@@ -145,9 +145,18 @@ Breaking down this long query, we can see the following parameters being passed 
 	This sets the sorting function to be \textit{geodist()} -- which will sort all of the data based on their distance to \textit{pt}. The value \textit{asc} indicates that the sorted data needs to be in ascending order of distance.
 \end{itemize}
 
+\subsection{CORS Policy}
+Solr serves as a backend for the website, thus needs to be always active in order to receive queries and send out responses. The only problem I've encountered with this server was that the CORS (Cross-Origin Resource Sharing) header is by default not active. \\ \\
+In order to fix this problem, I've modified the file:
+
+\begin{verbatim}
+  solr-8.10.1/server/solr-webapp/webapp/WEB-INF/web.xml
+\end{verbatim}
+By adding a \textit{filter} tag and a \textit{filter-mapping}. By doing so, I'm activating the CORS header making it possible for the frontend to connect to the Solr server.
+
 \section{Webapp}
 In order to create the webapp, I've used Vue.js. Vue is a JavaScript framework used to create modular applications, and is particularly suitable when dealing with lists -- in this case the hotels. \\ \\
-The website is divided in two main pages. The first is used to search for a place, while the second is used to both display the results and let the user modify the query.
+The website is divided in three main pages. The first is used to search for a place, the second is used to both display the results and let the user modify the query, and the third is used to warn the user that his/her query didn't produce any result.
 
 \subsection{Search Page}
 This page was left very bare-bones intentionally. This is because I wanted to make the user focus only on what he/she came on the website to do: search for hotels. \\ \\
@@ -155,7 +164,7 @@ After that the user has typed in the search box the location to look for and pre
 The following is a screen-shot of the page.
 
 \begin{center}
-	\includegraphics[width=15cm]{./main.png}
+	\includegraphics[width=12cm]{./main.png}
 \end{center}
 
 \subsection{Results Page}
@@ -174,9 +183,18 @@ The number of hotels retrieved from Solr, and how much time the request took, ca
 The following is a screen-shot of the page.
 
 \begin{center}
-	\includegraphics[width=15cm]{./results.png}
+	\includegraphics[width=12cm]{./results.png}
 \end{center}
 
+\subsection{Not Found Page}
+This page is used in order to tell the user that the query he/she has written does not correspond to any available document. Furthermore, some suggestions are proposed to the user in order to modify the query. Such suggestions can be seen in the screen-shot below.
+
+\begin{center}
+	\includegraphics[width=12cm]{./not-found.png}
+\end{center}
+
+\subsection{Ad Blockers}
+Something that I've noticed while working on this project, was that \textit{Ad Blockers} didn't allow the map to be visible. Thus I recommend to disable all \textit{Ad Blockers} in order to make everything work smoothly.
 
 \end{document}
 
